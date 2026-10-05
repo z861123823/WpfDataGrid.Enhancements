@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>WpfDataGrid.Enhancements.PerfBench</AssemblyName>
+    <RootNamespace>WpfDataGrid.Enhancements.PerfBench</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements\WpfDataGrid.Enhancements.csproj" />
+    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements.Pro\WpfDataGrid.Enhancements.Pro.csproj" />
+  </ItemGroup>
+
+</Project>
