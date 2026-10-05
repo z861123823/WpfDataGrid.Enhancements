@@ -1,0 +1,62 @@
+# ---- Visual Studio ----
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---- Build results ----
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# ---- NuGet ----
+*.nupkg
+*.snupkg
+nuget.config
+!nuget.config.example
+
+# ---- Package artifacts ----
+artifacts/
+
+# ---- Rider / ReSharper ----
+.idea/
+*.DotSettings.user
+
+# ---- Test results ----
+[Tt]est[Rr]esult*/
+[Tt]est[Rr]esults*/
+*.trx
+*.coverage
+coverage*.json
+
+# ---- Output files ----
+*.log
+*.tmp
+
+# ---- MSBuild ----
+*.tfm
+msbuild.log
+
+# ---- Misc ----
+*.pdb
+*.cache
+*~
+*.bak
+*.rsuser
+
+# ---- License & keys (private) ----
+keys/
+*.license
+*.pem
+!keys/.gitignore

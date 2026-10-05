@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-windows;net462</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>WpfDataGrid.Enhancements</RootNamespace>
+    <AssemblyName>WpfDataGrid.Enhancements</AssemblyName>
+    <PackageId>WpfDataGrid.Enhancements</PackageId>
+    <Version>0.9.0</Version>
+    <Authors>WpfDataGrid.Enhancements Team</Authors>
+    <Description>Lightweight DataGrid enhancement library for WPF: multi-column filtering, theming, CSV export and integration foundations (Open Source Edition, MIT).</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>wpf;datagrid;filtering;filter;export;csv;theme;behavior;mvvm;enhancements</PackageTags>
+    <RepositoryUrl>https://github.com/placeholder/WpfDataGrid.Enhancements</RepositoryUrl>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <!-- 纯 CLI / CI 环境无 .NET Framework 4.6.2 targeting pack 时，从 NuGet 拉取参考程序集 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

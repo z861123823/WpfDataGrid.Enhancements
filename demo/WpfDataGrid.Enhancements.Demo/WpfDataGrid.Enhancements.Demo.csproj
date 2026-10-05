@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>WpfDataGrid.Enhancements.Demo</RootNamespace>
+    <AssemblyName>WpfDataGrid.Enhancements.Demo</AssemblyName>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements\WpfDataGrid.Enhancements.csproj" />
+    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements.Pro\WpfDataGrid.Enhancements.Pro.csproj" />
+  </ItemGroup>
+
+</Project>

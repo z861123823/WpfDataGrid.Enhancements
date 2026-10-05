@@ -1,0 +1,90 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ===== 浅色主题（Enhancements.Light）===== -->
+
+    <!-- 基础色板 -->
+    <Color x:Key="DataGridEnhancements.AccentColor">#2D6CDF</Color>
+    <SolidColorBrush x:Key="DataGridEnhancements.AccentBrush" Color="{StaticResource DataGridEnhancements.AccentColor}" />
+    <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonForeground" Color="#333333" />
+    <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonActiveBackground" Color="#EAF1FF" />
+    <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonActiveForeground" Color="#2D6CDF" />
+
+    <!-- DataGrid 整体样式 -->
+    <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Foreground" Value="#333333" />
+        <Setter Property="BorderBrush" Value="#CCCCCC" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="HorizontalGridLinesBrush" Value="#E6E6E6" />
+        <Setter Property="RowBackground" Value="White" />
+        <Setter Property="AlternatingRowBackground" Value="#F7F9FC" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="RowHeaderWidth" Value="0" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+    </Style>
+
+    <!-- 列头 -->
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="#F3F5F8" />
+        <Setter Property="Foreground" Value="#333333" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="BorderBrush" Value="#D9D9D9" />
+        <Setter Property="BorderThickness" Value="0,0,1,1" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- 行 -->
+    <Style TargetType="DataGridRow">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="#F0F0F0" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Foreground" Value="#333333" />
+    </Style>
+
+    <!-- 单元格 -->
+    <Style TargetType="DataGridCell">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Foreground" Value="#333333" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- 过滤按钮（供 DataGridFilterBehavior 引用） -->
+    <Style x:Key="DataGridEnhancements.FilterButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource DataGridEnhancements.FilterButtonBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource DataGridEnhancements.FilterButtonForeground}" />
+        <Setter Property="BorderBrush" Value="#CCCCCC" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontSize" Value="9" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource DataGridEnhancements.FilterButtonActiveBackground}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#D6E4FF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

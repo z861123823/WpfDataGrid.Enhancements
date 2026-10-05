@@ -1,0 +1,29 @@
+WpfDataGrid.Enhancements.Pro - Commercial License
+
+Copyright (c) 2026 WpfDataGrid.Enhancements contributors
+
+WpfDataGrid.Enhancements.Pro is a commercial add-on library for the WPF
+DataGrid Enhancements project. It is NOT open source and is distributed
+under a commercial license.
+
+You may use this package under one of the following conditions:
+
+1. EVALUATION / TRIAL USE
+   The package includes a built-in trial mode (30 days / 5,000 rows by
+   default). During the trial period you may use all Pro features for
+   evaluation purposes without a license file.
+
+2. LICENSED USE
+   After purchasing a license (Personal / Team / Enterprise), you receive
+   a digitally signed license file (wpfdatagrid.enhancements.license).
+   Place the license file next to your application or configure
+   LicenseManager.LicenseFilePath, and all Pro features become fully
+   available up to the granted feature mask.
+
+3. FORBIDDEN USE
+   Redistribution, resale, sublicensing or reverse engineering of this
+   package without explicit written permission from the author is
+   prohibited. You may not remove or alter license validation code.
+
+For licensing inquiries, purchase and activation instructions, please
+refer to docs/licensing/README.md in the repository root.

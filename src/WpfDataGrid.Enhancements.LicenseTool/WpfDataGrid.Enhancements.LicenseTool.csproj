@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>WpfDataGrid.Enhancements.LicenseTool</RootNamespace>
+    <AssemblyName>WpfDataGrid.Enhancements.LicenseTool</AssemblyName>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- 独立签发工具，不随 NuGet 包分发，也不产生 NuGet 元数据 -->
+    <IsPackable>false</IsPackable>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 与 Pro 库共享同一份许可证文档契约源码，避免序列化漂移；不引用 Pro 库本体（避免传递 Sylvan/PdfSharp 依赖） -->
+    <Compile Include="..\WpfDataGrid.Enhancements.Pro\Licensing\LicenseDocument.cs" Link="LicenseDocument.cs" />
+  </ItemGroup>
+
+</Project>
