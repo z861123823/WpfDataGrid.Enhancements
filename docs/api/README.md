@@ -1,18 +1,3 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 871839cd4a3ed3257c2e115376c7f809_23e6f0b8c0bc11f197eb525400393706
-    ReservedCode1: EPjsiJgHvXlNWMsa7fVYyaAur9lWs1zmjLe/0kkO8B34iCD39T2g2axuRsPqthxtkOL8YkcZh1/+r3ghcJBFwUseB42eApUFHI6NoIkh6FAFL5qbqFkOr8ykkgRvi8baegFzz0I+0bYbXHhA3owqvVdme42ZPgssTicLQrR483WlyB4FnxXlb10fmNY=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 871839cd4a3ed3257c2e115376c7f809_23e6f0b8c0bc11f197eb525400393706
-    ReservedCode2: EPjsiJgHvXlNWMsa7fVYyaAur9lWs1zmjLe/0kkO8B34iCD39T2g2axuRsPqthxtkOL8YkcZh1/+r3ghcJBFwUseB42eApUFHI6NoIkh6FAFL5qbqFkOr8ykkgRvi8baegFzz0I+0bYbXHhA3owqvVdme42ZPgssTicLQrR483WlyB4FnxXlb10fmNY=
----
-
-
-
-
-
 # API 参考
 
 本文档索引 WpfDataGrid.Enhancements 解决方案的公开类型清单：每个类型一句话说明 + 主要成员签名摘录。详细用法见 [快速上手](../guide/quick-start.md)。

@@ -1,18 +1,3 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 871839cd4a3ed3257c2e115376c7f809_23510324c0bc11f197eb525400393706
-    ReservedCode1: jLjYf3iUIqAGXplbqbIDUXO9wY+79wqUJxpDtamUQtpYQaA40Oqu08boymAXu70a42/eGPp1N0HZxV79A9XFc0jxTZ1Z0gND6Xa9KWALYeB1NY57OHw+ibngWGe6+AV5Fs2Hlpr5hS8Gz7M4Y6MSS1ChP3qXgTGuJeVOp8YeJvh6RIXEmT4jUTSQHFQ=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 871839cd4a3ed3257c2e115376c7f809_23510324c0bc11f197eb525400393706
-    ReservedCode2: jLjYf3iUIqAGXplbqbIDUXO9wY+79wqUJxpDtamUQtpYQaA40Oqu08boymAXu70a42/eGPp1N0HZxV79A9XFc0jxTZ1Z0gND6Xa9KWALYeB1NY57OHw+ibngWGe6+AV5Fs2Hlpr5hS8Gz7M4Y6MSS1ChP3qXgTGuJeVOp8YeJvh6RIXEmT4jUTSQHFQ=
----
-
-
-
-
-
 # 快速上手
 
 本教程带你从零开始使用 **WPF DataGrid 增强包**：安装 → 引入命名空间 → 挂载过滤 → 过滤演示 → 导出演示 → 主题切换 → 常见问题。示例代码均为可编译的完整片段，目标框架 `net8.0-windows` 或 `net462`。

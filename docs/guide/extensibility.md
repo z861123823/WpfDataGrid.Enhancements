@@ -1,20 +1,3 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 871839cd4a3ed3257c2e115376c7f809_fd7ad5f6c0c511f18019525400248c00
-    ReservedCode1: EUVmvW42t9/daBhZtf+frohshRhjIu2v/kh1pMLQ1JUSErudMPx64ykMgulLIeacBLIryJgEhfhfcB5+PNx3cMQVwqZh5hOBJQjF0lPCofQnbtwf+J2Y2vsFIc1iq0HP+7VZczXZnucInkIbEUV0A6ppaVByjxBG05QOI+j3uk9b2P2VqYKwz6HqU8A=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 871839cd4a3ed3257c2e115376c7f809_fd7ad5f6c0c511f18019525400248c00
-    ReservedCode2: EUVmvW42t9/daBhZtf+frohshRhjIu2v/kh1pMLQ1JUSErudMPx64ykMgulLIeacBLIryJgEhfhfcB5+PNx3cMQVwqZh5hOBJQjF0lPCofQnbtwf+J2Y2vsFIc1iq0HP+7VZczXZnucInkIbEUV0A6ppaVByjxBG05QOI+j3uk9b2P2VqYKwz6HqU8A=
----
-
-
-
-
-
-
-
 # 扩展指南（Extensibility）
 
 本文档以三步教程演示如何在 WpfDataGrid.Enhancements 上做功能扩展，并提供扩展点总览表。

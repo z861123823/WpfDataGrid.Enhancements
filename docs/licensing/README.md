@@ -1,16 +1,3 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 871839cd4a3ed3257c2e115376c7f809_f2692996c0b711f18019525400248c00
-    ReservedCode1: P474HbMILBmrHfxS952qBgJTeqscSBJ1Qb8u9Rqkbw/doH88wVlHfemnZ+/QsrVHGXBltqirFQ4eYsePWkkPVdK1W2Us3ud+9O2P0OiGWAm+Fuu5/dUFS1E4RWWtWLJpr/3yiWdbZiKXJOojnMOa7nNhsH/n1CIUu0JXXhoz6SlFgnM5FhzmcLqSrlM=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 871839cd4a3ed3257c2e115376c7f809_f2692996c0b711f18019525400248c00
-    ReservedCode2: P474HbMILBmrHfxS952qBgJTeqscSBJ1Qb8u9Rqkbw/doH88wVlHfemnZ+/QsrVHGXBltqirFQ4eYsePWkkPVdK1W2Us3ud+9O2P0OiGWAm+Fuu5/dUFS1E4RWWtWLJpr/3yiWdbZiKXJOojnMOa7nNhsH/n1CIUu0JXXhoz6SlFgnM5FhzmcLqSrlM=
----
-
-
-
 # 授权说明（WpfDataGrid.Enhancements.Pro）
 
 - **开源版（WpfDataGrid.Enhancements）**：MIT 协议，GitHub Releases + NuGet.org 公开分发。
