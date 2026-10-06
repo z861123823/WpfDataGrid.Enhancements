@@ -27,7 +27,7 @@ jobs:
           echo "PACKAGE_VERSION=$version" >> $env:GITHUB_ENV
 
       - name: Restore
-        run: dotnet restore WpfDataGrid.Enhancements.sln
+        run: dotnet restore src/WpfDataGrid.Enhancements/WpfDataGrid.Enhancements.csproj
 
       - name: Pack
         run: dotnet pack src/WpfDataGrid.Enhancements/WpfDataGrid.Enhancements.csproj -c Release --no-restore -o artifacts/nuget -p:PackageVersion=${{ env.PACKAGE_VERSION }}

@@ -15,11 +15,10 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      # Open-source core library only. Demo/Tests reference the closed-source
+      # Pro library and are validated in the local Pro environment.
       - name: Restore
-        run: dotnet restore WpfDataGrid.Enhancements.sln
+        run: dotnet restore src/WpfDataGrid.Enhancements/WpfDataGrid.Enhancements.csproj
 
       - name: Build
-        run: dotnet build WpfDataGrid.Enhancements.sln -c Release --no-restore
-
-      - name: Test
-        run: dotnet test WpfDataGrid.Enhancements.sln -c Release --no-build
+        run: dotnet build src/WpfDataGrid.Enhancements/WpfDataGrid.Enhancements.csproj -c Release --no-restore
