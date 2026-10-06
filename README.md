@@ -153,5 +153,3 @@ dotnet restore
 dotnet build WpfDataGrid.Enhancements.sln   # 双 TFM 0 警告 0 错误
 dotnet test tests/WpfDataGrid.Enhancements.Tests   # 全部测试通过
 ```
-*（内容由AI生成，仅供参考）*
-*（内容由AI生成，仅供参考）*
