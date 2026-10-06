@@ -27,3 +27,4 @@ You may use this package under one of the following conditions:
 
 For licensing inquiries, purchase and activation instructions, please
 refer to docs/licensing/README.md in the repository root.
+（内容由AI生成，仅供参考）

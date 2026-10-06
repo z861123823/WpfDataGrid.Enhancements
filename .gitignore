@@ -60,3 +60,5 @@ keys/
 *.license
 *.pem
 !keys/.gitignore
+# ---- Pro (closed-source, NOT for public repo) ----
+src/WpfDataGrid.Enhancements.Pro/
