@@ -31,7 +31,7 @@ Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）
 
 | 浅色主题 | 深色主题 |
 |----------|----------|
-| ![浅色主题](assets/screenshots/demo-light.png) | ![深色主题](assets/screenshots/demo-dark.png) |
+| ![浅色主题](https://raw.githubusercontent.com/z861123823/WpfDataGrid.Enhancements/main/assets/screenshots/demo-light.png) | ![深色主题](https://raw.githubusercontent.com/z861123823/WpfDataGrid.Enhancements/main/assets/screenshots/demo-dark.png) |
 
 > 截图由 Demo 主窗口真实渲染生成，来源 `demo/WpfDataGrid.Enhancements.Demo`，可在本仓库 `assets/screenshots/` 目录查看原图。
 
