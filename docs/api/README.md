@@ -64,6 +64,33 @@ public class DataGridFilterBehavior : DataGridBehaviorBase
     public void ApplyFilter();
     public void SetFilterActive(bool active);
     public void Detach();
+
+    // 事件钩子（可扩展性）
+    public event EventHandler<FilterChangingEventArgs>? Filtering; // 过滤生效前触发，可取消
+    public event EventHandler<FilterChangedEventArgs>? Filtered;    // 过滤生效后触发
+
+    // 编程式过滤入口（等价于过滤面板点击"应用"）
+    public bool ApplyColumnFilter(string columnName, IEnumerable<IFilterPredicate> predicates);
+    public bool ClearColumnFilter(string columnName);
+}
+```
+
+### 过滤事件参数（Filtering / Filtered）
+
+```csharp
+public sealed class FilterChangingEventArgs : EventArgs
+{
+    public FilterChangingEventArgs(string columnName, IReadOnlyList<IFilterPredicate> predicates);
+    public string ColumnName { get; }
+    public IReadOnlyList<IFilterPredicate> Predicates { get; }
+    public bool Cancel { get; set; } // 设为 true 阻止本次过滤生效
+}
+
+public sealed class FilterChangedEventArgs : EventArgs
+{
+    public FilterChangedEventArgs(string columnName, IReadOnlyList<IFilterPredicate> predicates);
+    public string ColumnName { get; }
+    public IReadOnlyList<IFilterPredicate> Predicates { get; }
 }
 ```
 
@@ -187,7 +214,7 @@ public sealed class CsvExportProvider : IExportProvider
 挂载后可将 DataGrid 当前视图或选中行导出到文件。
 
 ```csharp
-public enum ExportScope { CurrentView, SelectedRows }
+public enum ExportScope { CurrentView, SelectedRows, AllData }
 
 public class DataGridExportBehavior : DataGridBehaviorBase
 {
@@ -195,6 +222,29 @@ public class DataGridExportBehavior : DataGridBehaviorBase
     public ICollection<IExportProvider> Providers { get; }
     public void Export(ExportScope scope, string filePath);
     public void Export(ExportScope scope, string filePath, IProgress<int>? progress);
+
+    // 事件钩子（可扩展性）
+    public event EventHandler<ExportingEventArgs>? Exporting; // 导出即将开始前触发，可取消
+    public event EventHandler<ExportedEventArgs>? Exported;   // 导出成功完成后触发
+}
+```
+
+### 导出事件参数（Exporting / Exported）
+
+```csharp
+public sealed class ExportingEventArgs : EventArgs
+{
+    public ExportingEventArgs(string filePath, int rowCount);
+    public string FilePath { get; }
+    public int RowCount { get; }
+    public bool Cancel { get; set; } // 设为 true 阻止本次导出（不创建文件）
+}
+
+public sealed class ExportedEventArgs : EventArgs
+{
+    public ExportedEventArgs(string filePath, int rowCount);
+    public string FilePath { get; }
+    public int RowCount { get; }
 }
 ```
 
@@ -211,6 +261,14 @@ public static class DataGridThemeManager
 
     public static void ApplyTheme(ThemeMode mode);
     public static void ClearTheme();
+
+    // 自定义主题注册与切换（可扩展性）
+    public static void RegisterTheme(string name, ResourceDictionary dictionary);
+    public static bool ApplyTheme(string name);              // 切换到已注册的自定义主题
+    public static ResourceDictionary? TryGetRegisteredTheme(string name);
+    public static IReadOnlyCollection<string> RegisteredThemeNames { get; }
+    public static bool IsCustomThemeApplied { get; }
+    public static string? AppliedCustomThemeName { get; }
 }
 ```
 
@@ -338,8 +396,14 @@ public class AsyncVirtualizingCollection<T> : IList<T>, IList,
 
 ## 扩展点
 
-- **新增导出格式**：实现 `IExportProvider` 并加入 `DataGridExportBehavior.Providers`。
-- **自定义过滤谓词**：实现 `IFilterPredicate.Match(object?)`。
-- **自定义主题**：替换 `Theming/Themes/` 下的资源字典后调用 `DataGridThemeManager.ApplyTheme`。
+| 扩展方向 | 入口 | 说明 |
+|----------|------|------|
+| 自定义过滤谓词 | 实现 `IFilterPredicate.Match(object?)`，加入 `ColumnFilter.Predicates` | 文本 / 数值 / 日期等任意判定逻辑 |
+| 自定义导出格式 | 实现 `IExportProvider`，加入 `DataGridExportBehavior.Providers` | 按目标文件扩展名自动路由 |
+| 自定义主题注册与切换 | `DataGridThemeManager.RegisterTheme(name, dict)` + `ApplyTheme(name)` | 运行时注册并切换，覆盖 `DataGridEnhancements.*` 键即可换肤 |
+| 过滤前后钩子 | `DataGridFilterBehavior.Filtering`（可取消）/ `Filtered` | 参数含列名与生效谓词 |
+| 导出前后钩子 | `DataGridExportBehavior.Exporting`（可取消）/ `Exported` | 参数含目标路径与行数 |
+
+完整三步教程（含可编译示例代码）见 [扩展指南](../guide/extensibility.md)。
 *（内容由AI生成，仅供参考）*
 *（内容由AI生成，仅供参考）*

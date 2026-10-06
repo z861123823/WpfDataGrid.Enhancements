@@ -40,6 +40,16 @@ AIGC:
 | 授权体系（RSA-2048 签名授权，试用模式） | — | ✅ |
 | 协议 | MIT | 商业授权（内置 30 天试用） |
 
+## 界面预览
+
+Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）：
+
+| 浅色主题 | 深色主题 |
+|----------|----------|
+| ![浅色主题](assets/screenshots/demo-light.png) | ![深色主题](assets/screenshots/demo-dark.png) |
+
+> 截图由 Demo 主窗口真实渲染生成，来源 `demo/WpfDataGrid.Enhancements.Demo`，可在本仓库 `assets/screenshots/` 目录查看原图。
+
 ## 安装
 
 NuGet 包发布后可通过以下命令安装（占位，发布前替换为实际包版本）：

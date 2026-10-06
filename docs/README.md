@@ -22,6 +22,7 @@ AIGC:
 | 文档 | 说明 |
 |------|------|
 | [快速上手](guide/quick-start.md) | 安装 → 命名空间 → 挂载过滤 → 过滤 / 导出 / 主题演示 → 常见问题 |
+| [扩展指南](guide/extensibility.md) | 三步教程：自定义过滤谓词 / 自定义导出器 / 自定义主题注册，附扩展点总览表 |
 
 ## 🔧 API 参考
 
@@ -50,7 +51,8 @@ AIGC:
 docs/
 ├── README.md              本导航页
 ├── guide/
-│   └── quick-start.md     快速上手教程
+│   ├── quick-start.md     快速上手教程
+│   └── extensibility.md  扩展指南（自定义谓词 / 导出器 / 主题）
 ├── api/
 │   └── README.md          API 参考索引
 └── licensing/

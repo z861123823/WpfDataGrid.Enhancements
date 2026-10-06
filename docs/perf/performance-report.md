@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 871839cd4a3ed3257c2e115376c7f809_ffb26322c0be11f18019525400248c00
+    ReservedCode1: zhaK5EzbtVUvYSiSy1Jr10nOC8QkHZWu6PSfLKf00+EMWSc47KPa4UiL4xm/reg1rzx1TMCM17GZ0F/27tZMxaut57WC5HR4509urbFBOaiRQM5ybZrVA+AzX4mBCImL40rvVCp7AAANIfb+VvzwIezl0fLC2KzWjIEWm8dQo4rJpzr4ujkexQeHl44=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 871839cd4a3ed3257c2e115376c7f809_ffb26322c0be11f18019525400248c00
+    ReservedCode2: zhaK5EzbtVUvYSiSy1Jr10nOC8QkHZWu6PSfLKf00+EMWSc47KPa4UiL4xm/reg1rzx1TMCM17GZ0F/27tZMxaut57WC5HR4509urbFBOaiRQM5ybZrVA+AzX4mBCImL40rvVCp7AAANIfb+VvzwIezl0fLC2KzWjIEWm8dQo4rJpzr4ujkexQeHl44=
+---
+
 # WpfDataGrid.Enhancements 性能压测报告
 
 > 压测日期：2026-10-05 21:13
@@ -55,3 +66,4 @@
 2. **ICollectionView 同步过滤阻塞**：10 万行全量筛选虽仅 3 ms，但真实场景含 UI 刷新与容器重建；建议大数据视图默认 AsyncVirtualizingCollection + FilterModel（增量谓词），避免全量物化。
 3. **PageLoader 异步化已达标**：如需进一步降低首屏延迟，可在服务端预取前 N 页并预热缓存。
 4. **进程内基准 vs 真实负载**：本报告为纯内存测量，接入真实数据源后建议复测一次以校准 PageLoader 侧耗时占比。
+*（内容由AI生成，仅供参考）*
