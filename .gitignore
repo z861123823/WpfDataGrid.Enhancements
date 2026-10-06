@@ -62,3 +62,4 @@ keys/
 !keys/.gitignore
 # ---- Pro (closed-source, NOT for public repo) ----
 src/WpfDataGrid.Enhancements.Pro/
+src/WpfDataGrid.Enhancements.Pro.BuildTasks/

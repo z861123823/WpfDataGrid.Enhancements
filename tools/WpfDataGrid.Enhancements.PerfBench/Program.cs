@@ -9,8 +9,10 @@ using System.Threading;
 using System.Windows.Data;
 using WpfDataGrid.Enhancements.Exporting;
 using WpfDataGrid.Enhancements.Filtering;
+#if PRO
 using WpfDataGrid.Enhancements.Pro.Exporting;
 using WpfDataGrid.Enhancements.Pro.Performance;
+#endif
 
 namespace WpfDataGrid.Enhancements.PerfBench;
 
@@ -42,7 +44,9 @@ public static class Program
         Console.WriteLine($"data|Generate|{sw.ElapsedMilliseconds}|rows={orders.Count}");
 
         // ---------- 1. AsyncVirtualizingCollection ----------
+#if PRO
         RunVirtualization(orders);
+#endif
 
         // ---------- 2. 过滤响应 ----------
         RunFilterBench(orders);
@@ -54,7 +58,9 @@ public static class Program
         RunCsvExport(orders);
 
         // ---------- 5. Xlsx 导出 ----------
+#if PRO
         RunXlsxExport(orders);
+#endif
 
         Console.WriteLine("DONE");
     }
@@ -80,6 +86,7 @@ public static class Program
         return list;
     }
 
+#if PRO
     private static void RunVirtualization(List<OrderRecord> orders)
     {
         Console.WriteLine("--- async-virtualizing ---");
@@ -115,6 +122,7 @@ public static class Program
         sw.Stop();
         Console.WriteLine($"async|CacheHit100k|{sw.ElapsedMilliseconds}|dummy={dummy}");
     }
+#endif
 
     private static void RunFilterBench(List<OrderRecord> orders)
     {
@@ -166,6 +174,7 @@ public static class Program
         Console.WriteLine($"export|csv|{sw.ElapsedMilliseconds}|{size}");
     }
 
+#if PRO
     private static void RunXlsxExport(List<OrderRecord> orders)
     {
         Console.WriteLine("--- xlsx-export ---");
@@ -180,6 +189,7 @@ public static class Program
         var size = new FileInfo(outPath).Length;
         Console.WriteLine($"export|xlsx|{sw.ElapsedMilliseconds}|{size}");
     }
+#endif
 
     private static TableData BuildTableData(List<OrderRecord> orders)
     {

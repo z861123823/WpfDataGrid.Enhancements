@@ -7,6 +7,8 @@
     <RootNamespace>WpfDataGrid.Enhancements.Tests</RootNamespace>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <!-- 公开仓库默认不引用 Pro：加 /p:EnablePro=true 可启用 Pro 专属测试（License/Xlsx）。 -->
+    <DefineConstants Condition="'$(EnablePro)' == 'true'">$(DefineConstants);PRO</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +19,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements\WpfDataGrid.Enhancements.csproj" />
-    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements.Pro\WpfDataGrid.Enhancements.Pro.csproj" />
+    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements.Pro\WpfDataGrid.Enhancements.Pro.csproj" Condition="'$(EnablePro)' == 'true'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Pro 专属测试仅在 EnablePro=true 时编译，保证公开仓库 clone 后无 Pro 也能跑全部开源测试。 -->
+    <Compile Remove="LicenseManagerTests.cs;XlsxExportProviderTests.cs" Condition="'$(EnablePro)' != 'true'" />
   </ItemGroup>
 
 </Project>

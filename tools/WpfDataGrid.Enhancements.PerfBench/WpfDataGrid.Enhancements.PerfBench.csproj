@@ -8,11 +8,13 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>WpfDataGrid.Enhancements.PerfBench</AssemblyName>
     <RootNamespace>WpfDataGrid.Enhancements.PerfBench</RootNamespace>
+    <!-- 公开仓库默认不引用 Pro：加 /p:EnablePro=true 可启用 Pro 性能项（虚拟化/xlsx）。 -->
+    <DefineConstants Condition="'$(EnablePro)' == 'true'">$(DefineConstants);PRO</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements\WpfDataGrid.Enhancements.csproj" />
-    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements.Pro\WpfDataGrid.Enhancements.Pro.csproj" />
+    <ProjectReference Include="..\..\src\WpfDataGrid.Enhancements.Pro\WpfDataGrid.Enhancements.Pro.csproj" Condition="'$(EnablePro)' == 'true'" />
   </ItemGroup>
 
 </Project>

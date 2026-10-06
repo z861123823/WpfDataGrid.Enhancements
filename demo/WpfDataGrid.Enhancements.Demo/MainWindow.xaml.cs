@@ -9,9 +9,11 @@ using Microsoft.Xaml.Behaviors;
 using WpfDataGrid.Enhancements;
 using WpfDataGrid.Enhancements.Exporting;
 using WpfDataGrid.Enhancements.Filtering;
+#if PRO
 using WpfDataGrid.Enhancements.Pro;
 using WpfDataGrid.Enhancements.Pro.Exporting;
 using WpfDataGrid.Enhancements.Pro.Performance;
+#endif
 using WpfDataGrid.Enhancements.Theming;
 
 namespace WpfDataGrid.Enhancements.Demo;
@@ -35,7 +37,9 @@ public partial class MainWindow : Window
     private static readonly string[] Priorities = { "高", "中", "低" };
 
     private readonly List<OrderRecord> _records = new List<OrderRecord>(RecordCount);
+#if PRO
     private AsyncVirtualizingCollection<OrderRecord>? _virtualCollection;
+#endif
     private static bool _customThemeRegistered;
 
     public MainWindow()
@@ -53,9 +57,13 @@ public partial class MainWindow : Window
         MainDataGrid.ItemsSource = _records;
         RowCountChip.Text = $"{_records.Count:N0} 行";
         StatusText.Text = $"共 {_records.Count:N0} 行 · 普通模式（列头漏斗可过滤，工具栏按钮可导出）";
+#if PRO
         LicenseText.Text = LicenseManager.IsLicensed
             ? "Pro 授权：已激活"
             : "Pro 授权：未激活（Demo 仍可体验 xlsx/PDF 导出）";
+#else
+        LicenseText.Text = "Pro 组件未编译（开源演示；构建加 /p:EnablePro=true 可启用 xlsx/PDF/虚拟化）";
+#endif
         ThemeStatusText.Text = "主题：跟随系统";
 
         SubscribeBehaviorEvents();
@@ -264,7 +272,9 @@ public partial class MainWindow : Window
     private void Export(string filter, string defaultFileName, ExportScope scope)
     {
         var behavior = GetExportBehavior();
+#if PRO
         EnsureProProviders(behavior);
+#endif
 
         var dialog = new SaveFileDialog
         {
@@ -286,6 +296,7 @@ public partial class MainWindow : Window
         }
     }
 
+#if PRO
     private static void EnsureProProviders(DataGridExportBehavior behavior)
     {
         if (behavior.Providers.All(p => !(p is XlsxExportProvider)))
@@ -298,6 +309,7 @@ public partial class MainWindow : Window
             behavior.Providers.Add(new PdfExportProvider());
         }
     }
+#endif
 
     private DataGridExportBehavior GetExportBehavior()
         => Interaction.GetBehaviors(MainDataGrid).OfType<DataGridExportBehavior>().First();
@@ -308,6 +320,7 @@ public partial class MainWindow : Window
 
     private void VirtualModeToggle_Checked(object sender, RoutedEventArgs e)
     {
+#if PRO
         if (_virtualCollection == null)
         {
             _virtualCollection = new AsyncVirtualizingCollection<OrderRecord>(
@@ -319,6 +332,10 @@ public partial class MainWindow : Window
 
         MainDataGrid.ItemsSource = _virtualCollection;
         StatusText.Text = $"共 {_records.Count:N0} 行 · 大数据虚拟化模式（按需分页加载 {VirtualPageSize} 行/页，滚动即加载）";
+#else
+        VirtualModeToggle.IsChecked = false;
+        StatusText.Text = "大数据虚拟化属 Pro 组件，当前为开源编译；构建加 /p:EnablePro=true 后可体验";
+#endif
     }
 
     private void VirtualModeToggle_Unchecked(object sender, RoutedEventArgs e)

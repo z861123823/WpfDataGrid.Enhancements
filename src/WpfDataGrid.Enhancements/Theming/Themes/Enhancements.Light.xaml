@@ -6,10 +6,11 @@
     <!-- 鍩虹鑹叉澘 -->
     <Color x:Key="DataGridEnhancements.AccentColor">#2D6CDF</Color>
     <SolidColorBrush x:Key="DataGridEnhancements.AccentBrush" Color="{StaticResource DataGridEnhancements.AccentColor}" />
+    <SolidColorBrush x:Key="DataGridEnhancements.RowHoverBrush" Color="#1A2D6CDF" />
     <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonBackground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonForeground" Color="#4A5568" />
     <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonActiveBackground" Color="#D6E4FB" />
-    <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonActiveForeground" Color="#2D6CDF" />
+    <SolidColorBrush x:Key="DataGridEnhancements.FilterButtonActiveForeground" Color="#1D5FC8" />
 
     <!-- DataGrid 鏁翠綋鏍峰紡 -->
     <Style TargetType="DataGrid">
@@ -54,7 +55,7 @@
         <Setter Property="FontSize" Value="13" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#1A2D6CDF" />
+                <Setter Property="Background" Value="{StaticResource DataGridEnhancements.RowHoverBrush}" />
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="#332D6CDF" />

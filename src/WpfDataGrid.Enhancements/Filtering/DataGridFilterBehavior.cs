@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
@@ -399,6 +400,7 @@ public class DataGridFilterBehavior : DataGridBehaviorBase
                 ToolTip = "过滤：" + propertyPath,
                 Style = filterStyle
             };
+            AutomationProperties.SetName(_filterButton, "过滤：" + propertyPath);
             Grid.SetColumn(_filterButton, 1);
             grid.Children.Add(_filterButton);
 
