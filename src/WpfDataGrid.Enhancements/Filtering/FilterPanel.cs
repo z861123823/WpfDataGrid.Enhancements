@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 
 namespace WpfDataGrid.Enhancements.Filtering;
@@ -12,7 +16,7 @@ namespace WpfDataGrid.Enhancements.Filtering;
 /// 应用结果写入所属列的 <see cref="ColumnFilter"/> 并刷新视图。
 /// UI 全部采用代码构建，保证 net462 / net8.0-windows 双目标一致。
 /// </summary>
-public sealed class FilterPanel : UserControl
+public sealed class FilterPanel : UserControl, IFilterPanel
 {
     private readonly DataGridFilterBehavior _owner;
     private readonly string _columnName;
@@ -34,6 +38,10 @@ public sealed class FilterPanel : UserControl
     private DatePicker? _dateEnd;
 
     private readonly List<CheckBox> _enumChecks = new();
+    private Style? _buttonStyle;
+    private Style? _checkStyle;
+    private Brush? _inputBackground;
+    private Brush? _inputBorder;
 
     /// <summary>创建一个过滤面板。</summary>
     /// <param name="owner">所属过滤行为。</param>
@@ -47,44 +55,136 @@ public sealed class FilterPanel : UserControl
         _propertyType = propertyType;
         _closeAction = closeAction ?? throw new ArgumentNullException(nameof(closeAction));
 
+        // 打开动画初始态：透明 + 轻微上移，Loaded 后播放淡入与位移动画。
+        Opacity = 0;
+        RenderTransform = new TranslateTransform(0, -10);
+        RenderTransformOrigin = new Point(0.5, 0.5);
+        Effect = new DropShadowEffect
+        {
+            BlurRadius = 18,
+            ShadowDepth = 4,
+            Direction = 270,
+            Opacity = 0.35,
+            Color = Colors.Black
+        };
+
         BuildUi();
         LoadCurrentState();
+
+        // 打开时聚焦到输入控件；Esc 关闭弹层。
+        Loaded += (_, __) =>
+        {
+            Dispatcher.BeginInvoke(new Action(FocusInput), DispatcherPriority.Input);
+            PlayOpenAnimation();
+        };
+        PreviewKeyDown += OnPreviewKeyDown;
     }
+
+    private void PlayOpenAnimation()
+    {
+        var duration = TimeSpan.FromMilliseconds(170);
+        var easing = new QuadraticEase { EasingMode = EasingMode.EaseOut };
+
+        BeginAnimation(OpacityProperty,
+            new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
+        if (RenderTransform is TranslateTransform translate)
+        {
+            translate.BeginAnimation(TranslateTransform.YProperty,
+                new DoubleAnimation(-10, 0, duration) { EasingFunction = easing });
+        }
+    }
+
+    private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape)
+        {
+            e.Handled = true;
+            _closeAction();
+        }
+    }
+
+    /// <summary>将键盘焦点移到面板最合适的输入控件（文本 / 数值 / 日期 / 枚举）。</summary>
+    public void FocusInput()
+    {
+        Control? target = _textBox ?? (Control?)_numericMin ?? _dateStart;
+        if (target == null && _enumChecks.Count > 0) target = _enumChecks[0];
+        if (target == null) target = this;
+
+        target.Focus();
+        Keyboard.Focus(target);
+    }
+
+    /// <summary>关闭弹层（Esc、关闭按钮与客户面板均可调用）。</summary>
+    public void Close() => _closeAction();
 
     private void BuildUi()
     {
-        var root = new StackPanel
+        _buttonStyle = FindBrush("DataGridEnhancements.FilterPanelButton") as Style;
+        _checkStyle = FindBrush("DataGridEnhancements.FilterPanelCheckBox") as Style;
+        var primaryStyle = FindBrush("DataGridEnhancements.FilterPanelPrimaryButton") as Style;
+        var cardBrush = FindBrush("DataGridEnhancements.CardBackground") as Brush ?? SystemColors.WindowBrush;
+        _inputBackground = FindBrush("DataGridEnhancements.FilterInputBackground") as Brush ?? SystemColors.WindowBrush;
+        _inputBorder = FindBrush("DataGridEnhancements.FilterInputBorderBrush") as Brush ?? SystemColors.ControlDarkBrush;
+        var textBrush = FindBrush("DataGridEnhancements.TextPrimary") as Brush ?? SystemColors.WindowTextBrush;
+        var borderBrush = FindBrush("DataGridEnhancements.FilterPanelBorderBrush") as Brush ?? SystemColors.ControlDarkBrush;
+        var separatorBrush = FindBrush("DataGridEnhancements.FilterPanelSeparatorBrush") as Brush ?? SystemColors.ControlLightBrush;
+
+        // UserControl.Foreground 沿属性继承传给子 TextBlock，深色主题下文字颜色同步联动。
+        Foreground = textBrush;
+
+        // 外层圆角边框容器：圆角 8 + 1px 主题淡化边框 + 卡片背景；DropShadow 保留在 UserControl 上。
+        var shell = new Border
         {
-            Margin = new Thickness(12),
-            MinWidth = 260,
-            MaxWidth = 340,
-            Background = SystemColors.WindowBrush
+            CornerRadius = new CornerRadius(8),
+            BorderBrush = borderBrush,
+            BorderThickness = new Thickness(1),
+            Background = cardBrush,
+            ClipToBounds = true
         };
 
+        var root = new StackPanel
+        {
+            Margin = new Thickness(14),
+            MinWidth = 284,
+            MaxWidth = 360
+        };
+
+        // 标题栏：标题 + 分隔线
         var title = new TextBlock
         {
-            Text = "过滤：" + _columnName,
-            FontWeight = FontWeights.Bold,
-            Margin = new Thickness(10, 10, 10, 4)
+            Text = "筛选：" + _columnName,
+            FontWeight = FontWeights.SemiBold,
+            FontSize = 13,
+            Foreground = textBrush,
+            Margin = new Thickness(2, 0, 2, 6)
         };
         root.Children.Add(title);
 
-        _contentRoot = new StackPanel { Margin = new Thickness(10, 0, 10, 0) };
+        var separator = new Border
+        {
+            Height = 1,
+            Background = separatorBrush,
+            Margin = new Thickness(0, 0, 0, 12)
+        };
+        root.Children.Add(separator);
+
+        _contentRoot = new StackPanel();
         root.Children.Add(_contentRoot);
 
         var buttons = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Margin = new Thickness(10, 10, 10, 10)
+            Margin = new Thickness(0, 14, 0, 0),
+            HorizontalAlignment = HorizontalAlignment.Right
         };
 
-        var apply = new Button { Content = "应用", Width = 72, Margin = new Thickness(0, 0, 8, 0) };
+        var apply = new Button { Content = "应用", Width = 78, Height = 30, Margin = new Thickness(0, 0, 8, 0), Style = primaryStyle };
         apply.Click += (_, __) => Apply();
 
-        var clear = new Button { Content = "清除", Width = 72, Margin = new Thickness(0, 0, 8, 0) };
+        var clear = new Button { Content = "清除", Width = 78, Height = 30, Margin = new Thickness(0, 0, 8, 0), Style = _buttonStyle };
         clear.Click += (_, __) => Clear();
 
-        var close = new Button { Content = "关闭", Width = 72 };
+        var close = new Button { Content = "关闭", Width = 78, Height = 30, Style = _buttonStyle };
         close.Click += (_, __) => _closeAction();
 
         buttons.Children.Add(apply);
@@ -92,8 +192,22 @@ public sealed class FilterPanel : UserControl
         buttons.Children.Add(close);
         root.Children.Add(buttons);
 
-        Content = root;
+        shell.Child = root;
+        Content = shell;
         BuildEditor();
+    }
+
+    /// <summary>从应用资源查找画刷 / 样式等对象；未找到返回 null（TryFindResource 找不到键时返回 null，不抛异常）。</summary>
+    private static object? FindBrush(string key)
+        => Application.Current?.TryFindResource(key);
+
+    /// <summary>统一输入控件配色：背景 / 前景 / 边框（浅色、深色主题各自定义资源）。</summary>
+    private void StyleInput(Control control)
+    {
+        control.Background = _inputBackground;
+        control.Foreground = Foreground;
+        control.BorderBrush = _inputBorder;
+        control.BorderThickness = new Thickness(1);
     }
 
     private void BuildEditor()
@@ -133,24 +247,32 @@ public sealed class FilterPanel : UserControl
     private void BuildTextEditor()
     {
         if (_contentRoot == null) return;
+        var secondaryBrush = FindBrush("DataGridEnhancements.TextSecondary") as Brush ?? SystemColors.GrayTextBrush;
 
-        _textBox = new TextBox { Margin = new Thickness(0, 0, 0, 6) };
+        _textBox = new TextBox { Margin = new Thickness(0, 0, 0, 6), Height = 30, VerticalContentAlignment = VerticalAlignment.Center };
+        StyleInput(_textBox);
         _textBox.TextChanged += OnTextChangedDebounced;
         _contentRoot.Children.Add(_textBox);
 
         var hint = new TextBlock
         {
             Text = "输入文字即时过滤（防抖 300ms）",
-            FontSize = 11,
-            Foreground = SystemColors.GrayTextBrush,
-            Margin = new Thickness(0, 0, 0, 6)
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            Margin = new Thickness(0, 0, 0, 8)
         };
         _contentRoot.Children.Add(hint);
 
-        var modeRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 6) };
-        modeRow.Children.Add(new TextBlock { Text = "模式：", VerticalAlignment = VerticalAlignment.Center });
+        var modeRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 10) };
+        modeRow.Children.Add(new TextBlock
+        {
+            Text = "模式：",
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            VerticalAlignment = VerticalAlignment.Center
+        });
 
-        _textMode = new ComboBox { Width = 120, VerticalAlignment = VerticalAlignment.Center };
+        _textMode = new ComboBox { Width = 132, Height = 30, VerticalAlignment = VerticalAlignment.Center };
         _textMode.Items.Add(new ComboBoxItem { Content = "包含", Tag = TextMatchMode.Contains });
         _textMode.Items.Add(new ComboBoxItem { Content = "前缀", Tag = TextMatchMode.StartsWith });
         _textMode.Items.Add(new ComboBoxItem { Content = "后缀", Tag = TextMatchMode.EndsWith });
@@ -159,7 +281,14 @@ public sealed class FilterPanel : UserControl
         modeRow.Children.Add(_textMode);
         _contentRoot.Children.Add(modeRow);
 
-        _ignoreCase = new CheckBox { Content = "忽略大小写", IsChecked = true, Margin = new Thickness(0, 0, 0, 4) };
+        _ignoreCase = new CheckBox
+        {
+            Content = "忽略大小写",
+            IsChecked = true,
+            Margin = new Thickness(0, 0, 0, 4),
+            FontSize = 12,
+            Style = _checkStyle
+        };
         _ignoreCase.Checked += (_, __) => ApplyIfHasText();
         _ignoreCase.Unchecked += (_, __) => ApplyIfHasText();
         _contentRoot.Children.Add(_ignoreCase);
@@ -168,11 +297,19 @@ public sealed class FilterPanel : UserControl
     private void BuildNumericEditor()
     {
         if (_contentRoot == null) return;
+        var secondaryBrush = FindBrush("DataGridEnhancements.TextSecondary") as Brush ?? SystemColors.GrayTextBrush;
 
-        var modeRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 6) };
-        modeRow.Children.Add(new TextBlock { Text = "条件：", VerticalAlignment = VerticalAlignment.Center });
+        var modeRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 8) };
+        modeRow.Children.Add(new TextBlock
+        {
+            Text = "条件：",
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            VerticalAlignment = VerticalAlignment.Center
+        });
 
-        _numericMode = new ComboBox { Width = 150, VerticalAlignment = VerticalAlignment.Center };
+        _numericMode = new ComboBox { Width = 150, Height = 30, VerticalAlignment = VerticalAlignment.Center };
+        StyleInput(_numericMode);
         _numericMode.Items.Add(new ComboBoxItem { Content = "区间 [最小, 最大]", Tag = NumericCompareMode.Between });
         _numericMode.Items.Add(new ComboBoxItem { Content = "等于", Tag = NumericCompareMode.Equals });
         _numericMode.Items.Add(new ComboBoxItem { Content = "大于", Tag = NumericCompareMode.GreaterThan });
@@ -182,15 +319,31 @@ public sealed class FilterPanel : UserControl
         modeRow.Children.Add(_numericMode);
         _contentRoot.Children.Add(modeRow);
 
-        var minRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 6) };
-        minRow.Children.Add(new TextBlock { Text = "最小 / 目标值：", Width = 100, VerticalAlignment = VerticalAlignment.Center });
-        _numericMin = new TextBox { Width = 130 };
+        var minRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 8) };
+        minRow.Children.Add(new TextBlock
+        {
+            Text = "最小 / 目标值：",
+            Width = 100,
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+        _numericMin = new TextBox { Width = 130, Height = 30, VerticalContentAlignment = VerticalAlignment.Center };
+        StyleInput(_numericMin);
         minRow.Children.Add(_numericMin);
         _contentRoot.Children.Add(minRow);
 
-        var maxRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 6) };
-        maxRow.Children.Add(new TextBlock { Text = "最大：", Width = 100, VerticalAlignment = VerticalAlignment.Center });
-        _numericMax = new TextBox { Width = 130 };
+        var maxRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 8) };
+        maxRow.Children.Add(new TextBlock
+        {
+            Text = "最大：",
+            Width = 100,
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+        _numericMax = new TextBox { Width = 130, Height = 30, VerticalContentAlignment = VerticalAlignment.Center };
+        StyleInput(_numericMax);
         maxRow.Children.Add(_numericMax);
         _contentRoot.Children.Add(maxRow);
 
@@ -209,16 +362,33 @@ public sealed class FilterPanel : UserControl
     private void BuildDateEditor()
     {
         if (_contentRoot == null) return;
+        var secondaryBrush = FindBrush("DataGridEnhancements.TextSecondary") as Brush ?? SystemColors.GrayTextBrush;
 
-        var startRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 6) };
-        startRow.Children.Add(new TextBlock { Text = "起始日期：", Width = 90, VerticalAlignment = VerticalAlignment.Center });
-        _dateStart = new DatePicker { Width = 160 };
+        var startRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 8) };
+        startRow.Children.Add(new TextBlock
+        {
+            Text = "起始日期：",
+            Width = 90,
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+        _dateStart = new DatePicker { Width = 160, Height = 30 };
+        StyleInput(_dateStart);
         startRow.Children.Add(_dateStart);
         _contentRoot.Children.Add(startRow);
 
         var endRow = new StackPanel { Orientation = Orientation.Horizontal };
-        endRow.Children.Add(new TextBlock { Text = "结束日期：", Width = 90, VerticalAlignment = VerticalAlignment.Center });
-        _dateEnd = new DatePicker { Width = 160 };
+        endRow.Children.Add(new TextBlock
+        {
+            Text = "结束日期：",
+            Width = 90,
+            FontSize = 12,
+            Foreground = secondaryBrush,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+        _dateEnd = new DatePicker { Width = 160, Height = 30 };
+        StyleInput(_dateEnd);
         endRow.Children.Add(_dateEnd);
         _contentRoot.Children.Add(endRow);
     }
@@ -238,28 +408,43 @@ public sealed class FilterPanel : UserControl
             foreach (var value in Enum.GetValues(type)) values.Add(value);
         }
 
+        // 多选区放入滚动容器：枚举项较多时可滚动，避免面板撑爆屏幕。
+        var scroll = new ScrollViewer
+        {
+            MaxHeight = 180,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            Margin = new Thickness(0, 0, 0, 6)
+        };
+        var list = new StackPanel();
+
         foreach (var value in values)
         {
             var check = new CheckBox
             {
                 Content = Convert.ToString(value, CultureInfo.InvariantCulture),
                 Tag = value,
-                Margin = new Thickness(0, 2, 0, 2)
+                Margin = new Thickness(0, 2, 0, 2),
+                FontSize = 12,
+                Style = _checkStyle
             };
             check.Checked += (_, __) => Apply();
             check.Unchecked += (_, __) => Apply();
             _enumChecks.Add(check);
-            _contentRoot.Children.Add(check);
+            list.Children.Add(check);
         }
 
-        var tools = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 6, 0, 0) };
-        var all = new Button { Content = "全选", Width = 60, Margin = new Thickness(0, 0, 8, 0) };
+        scroll.Content = list;
+        _contentRoot.Children.Add(scroll);
+
+        var tools = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 6, 0, 0), HorizontalAlignment = HorizontalAlignment.Right };
+        var all = new Button { Content = "全选", Width = 68, Height = 30, Margin = new Thickness(0, 0, 8, 0), Style = _buttonStyle };
         all.Click += (_, __) =>
         {
             foreach (var check in _enumChecks) check.IsChecked = true;
             Apply();
         };
-        var none = new Button { Content = "全不选", Width = 60 };
+        var none = new Button { Content = "全不选", Width = 68, Height = 30, Style = _buttonStyle };
         none.Click += (_, __) =>
         {
             foreach (var check in _enumChecks) check.IsChecked = false;
@@ -415,37 +600,16 @@ public sealed class FilterPanel : UserControl
 
     private void Apply()
     {
-        var model = _owner.FilterModel;
-        if (model == null) return;
-
-        var column = model.GetOrAdd(_columnName);
-        column.ClearPredicates();
-
         var predicate = BuildPredicate();
-        if (predicate != null) column.AddPredicate(predicate);
-
-        model.Invalidate();
-        _owner.UpdateHeaderIndicator(_columnName, !column.IsEmpty);
+        var predicates = predicate != null
+            ? new IFilterPredicate[] { predicate }
+            : Array.Empty<IFilterPredicate>();
+        _owner.ApplyColumnFilter(_columnName, predicates);
     }
 
     private void Clear()
     {
-        var model = _owner.FilterModel;
-        if (model == null) return;
-
-        ColumnFilter? column = null;
-        foreach (var pair in model.ColumnFilters)
-        {
-            if (string.Equals(pair.Key, _columnName, StringComparison.Ordinal))
-            {
-                column = pair.Value;
-                break;
-            }
-        }
-
-        if (column != null) column.ClearPredicates();
-        model.Invalidate();
-        _owner.UpdateHeaderIndicator(_columnName, false);
+        _owner.ClearColumnFilter(_columnName);
         ResetControls();
     }
 

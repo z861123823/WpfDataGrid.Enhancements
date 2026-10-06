@@ -37,6 +37,17 @@ public class DataGridExportBehavior : DataGridBehaviorBase
     /// <summary>按扩展名注册的 Provider 集合（内置含 CSV）。</summary>
     public ICollection<IExportProvider> Providers { get; } = new List<IExportProvider>();
 
+    /// <summary>
+    /// 导出即将开始前触发（可取消）。参数含目标路径与行数。
+    /// 设置 <see cref="ExportingEventArgs.Cancel"/> 为 true 可阻止本次导出（不创建文件）。
+    /// </summary>
+    public event EventHandler<ExportingEventArgs>? Exporting;
+
+    /// <summary>
+    /// 导出成功完成后触发。参数含目标路径与实际导出行数。
+    /// </summary>
+    public event EventHandler<ExportedEventArgs>? Exported;
+
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -70,12 +81,21 @@ public class DataGridExportBehavior : DataGridBehaviorBase
                 $"未找到可处理扩展名“{Path.GetExtension(filePath)}”的导出 Provider。请设置 {nameof(ExportProvider)} 或向 {nameof(Providers)} 注册。");
         }
 
+        // 先收集数据：行数供 Exporting / Exported 事件携带。
+        var table = CollectData(scope, progress);
+        var rowCount = table.Rows.Count();
+
+        var changing = new ExportingEventArgs(filePath, rowCount);
+        Exporting?.Invoke(this, changing);
+        if (changing.Cancel) return;
+
         using (var stream = File.Create(filePath))
         {
-            provider.Export(CollectData(scope, progress), stream);
+            provider.Export(table, stream);
             stream.Flush();
         }
 
+        Exported?.Invoke(this, new ExportedEventArgs(filePath, rowCount));
         progress?.Report(100);
     }
 

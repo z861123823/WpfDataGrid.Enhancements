@@ -91,9 +91,30 @@ public static class DataGridExtensions
     private static void OnThemeModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         // 主题切换由 DataGridThemeManager 统一处理（浅色 / 深色 / 跟随系统）。
-        if (e.NewValue is ThemeMode mode)
+        if (!(d is DataGrid dataGrid) || !(e.NewValue is ThemeMode mode)) return;
+
+        // 立即应用：覆盖运行时切换（此时窗口已完整解析，一次合并即可刷新全部 DynamicResource）。
+        DataGridThemeManager.ApplyTheme(mode);
+
+        // 声明式 ThemeMode 在 XAML 解析中途触发（DataGrid 尚未 Loaded）时，
+        // 位于 DataGrid 之前的窗口元素已在主题合并前完成首轮 DynamicResource 求值，
+        // 表现为启动瞬间主题未生效。订阅 DataGrid Loaded，待窗口完全解析后重放一次主题，
+        // 刷新所有 DynamicResource 引用；已 Loaded 的场景无需重放。
+        if (dataGrid.IsLoaded)
         {
-            DataGridThemeManager.ApplyTheme(mode);
+            return;
         }
+
+        // 先移除再添加，保证同一 DataGrid 只挂载一个 handler，不重复、不泄漏；
+        // handler 在触发后自移除。
+        dataGrid.Loaded -= OnDataGridLoadedForThemeReplay;
+        dataGrid.Loaded += OnDataGridLoadedForThemeReplay;
+    }
+
+    private static void OnDataGridLoadedForThemeReplay(object? sender, RoutedEventArgs e)
+    {
+        var grid = (DataGrid)sender!;
+        grid.Loaded -= OnDataGridLoadedForThemeReplay;
+        DataGridThemeManager.ApplyTheme(GetThemeMode(grid));
     }
 }
