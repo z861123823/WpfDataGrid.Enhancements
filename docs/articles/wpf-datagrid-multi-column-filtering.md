@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 871839cd4a3ed3257c2e115376c7f809_86c11783e75311f184bd52540072b1e8
+    ReservedCode1: 9OJpGSb7wUgmY5fTDbEKY+1PpGIzKpYr0URKI+yPoQMJElf1HIUQDEHpkaDxWGoX/oWCYiCTvrcBg7B/7l8TyUiZAnbHzP6kzhld7uzRk6o49n2rgkUtm70qKq5zhmiVXtRxOtFdvq9T0Q+9u8NOvMeJY5gkdEMRE6HrPlxXtKtAlQeJjKQ8gqMp1Pw=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 871839cd4a3ed3257c2e115376c7f809_86c11783e75311f184bd52540072b1e8
+    ReservedCode2: 9OJpGSb7wUgmY5fTDbEKY+1PpGIzKpYr0URKI+yPoQMJElf1HIUQDEHpkaDxWGoX/oWCYiCTvrcBg7B/7l8TyUiZAnbHzP6kzhld7uzRk6o49n2rgkUtm70qKq5zhmiVXtRxOtFdvq9T0Q+9u8NOvMeJY5gkdEMRE6HrPlxXtKtAlQeJjKQ8gqMp1Pw=
+---
+
 # WPF DataGrid 多列组合过滤的实现：Behavior + 附加属性方案
 
 > 一行 XAML 打开过滤能力，列的过滤条件可组合、可编程控制、可拦截，全程不修改 DataGrid 的继承结构。
@@ -336,7 +347,7 @@ dotnet add package WpfDataGrid.Enhancements --version 1.0.1
 ```
 
 ```powershell
-Install-Package WpfDataGrid.Enhancements -Version 1.0.1
+Install-Package WpfDataGrid.Enhancements -Version 1.0.2
 ```
 
 - NuGet 包页：<https://www.nuget.org/packages/WpfDataGrid.Enhancements>
@@ -355,3 +366,4 @@ Install-Package WpfDataGrid.Enhancements -Version 1.0.1
 - **谓词层**（`IFilterPredicate`）负责单值判定，是唯一需要为业务定制的地方。
 
 如果你的项目也在重复写 `CollectionView.Filter`，不妨把这层抽出来。代码在 GitHub 上开源，欢迎提 issue 说场景——尤其是你在面板里需要哪些编辑器、以及大数据量下你更希望哪种过滤下推方式。
+*（内容由AI生成，仅供参考）*
