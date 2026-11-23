@@ -38,7 +38,7 @@ WPF 原生 `DataGrid` 不具备过滤、导出与虚拟化增强，生态中已�
 
 | 对比项 | 本包 `WpfDataGrid.Enhancements` | `DataGridExtensions` | `Actipro...DataGrid.Contrib` | `WpfExtendedDataGrid` |
 |--------|:---:|:---:|:---:|:---:|
-| 最新版本 | 1.0.2 | 2.9.1 | 26.1.1 | 4.8.4 |
+| 最新版本 | 1.0.3 | 2.9.1 | 26.1.1 | 4.8.4 |
 | 协议 | MIT | MIT | 开源（见包页） | 未声明 |
 | 目标框架 | net462 / net8.0-windows / net10.0-windows | net462 / net8.0-windows / net10.0-windows | net462 / net8.0-windows / net10.0-windows | 仅 net48 |
 | 列过滤面板（文本 / 数值 / 日期 / 枚举） | ✅ | ✅ | 见官方文档 | — |
@@ -72,11 +72,11 @@ Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）
 
 ## 安装
 
-已发布至 nuget.org，当前稳定版 **1.0.2**：
+已发布至 nuget.org，当前稳定版 **1.0.3**：
 
 ```bash
 # 开源版（MIT，nuget.org 公开分发）
-dotnet add package WpfDataGrid.Enhancements --version 1.0.2
+dotnet add package WpfDataGrid.Enhancements --version 1.0.3
 
 # Pro 版（商业授权，不公开分发）：授权后以 nupkg 直发，从本地源安装
 dotnet add package WpfDataGrid.Enhancements.Pro --source .\pro-packages
@@ -175,6 +175,7 @@ Pro 版（`WpfDataGrid.Enhancements.Pro`）采用 **RSA-2048 / RSA-SHA256 签名
 | M3 | 授权体系：RSA-2048 签名授权、LicenseTool 签发工具、试用模式 | ✅ 已完成 |
 | M4 | 导出美化与文档体系：xlsx 表头样式 / 自动列宽 / 对齐 / 冻结表头、完整中文文档 | ✅ 已完成（1.0.0） |
 | M5 | 框架覆盖与选型文档：新增 `net10.0-windows` 目标框架（三 TFM）、README 同类库横向对比 | ✅ 已完成（1.0.2） |
+| M6 | 包内文档同步：README 对比表与安装示例版本号对齐、GitHub Release 页面补建 | ✅ 已完成（1.0.3） |
 
 ## 获取 Pro 版（xlsx / PDF 导出、正则过滤、大数据虚拟化）
 

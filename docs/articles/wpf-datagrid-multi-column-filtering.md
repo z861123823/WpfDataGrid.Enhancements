@@ -347,7 +347,7 @@ dotnet add package WpfDataGrid.Enhancements --version 1.0.1
 ```
 
 ```powershell
-Install-Package WpfDataGrid.Enhancements -Version 1.0.2
+Install-Package WpfDataGrid.Enhancements -Version 1.0.3
 ```
 
 - NuGet 包页：<https://www.nuget.org/packages/WpfDataGrid.Enhancements>

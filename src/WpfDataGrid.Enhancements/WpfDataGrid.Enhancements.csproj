@@ -6,7 +6,7 @@
     <RootNamespace>WpfDataGrid.Enhancements</RootNamespace>
     <AssemblyName>WpfDataGrid.Enhancements</AssemblyName>
     <PackageId>WpfDataGrid.Enhancements</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>WpfDataGrid.Enhancements Team</Authors>
     <Description>Lightweight DataGrid enhancement library for WPF: multi-column filtering, theming, CSV export and integration foundations (Open Source Edition, MIT).</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
