@@ -1,5 +1,10 @@
 # WPF DataGrid 增强包（WpfDataGrid.Enhancements）
 
+[![NuGet](https://img.shields.io/nuget/v/WpfDataGrid.Enhancements.svg?label=NuGet)](https://www.nuget.org/packages/WpfDataGrid.Enhancements)
+[![Downloads](https://img.shields.io/nuget/dt/WpfDataGrid.Enhancements.svg?label=downloads)](https://www.nuget.org/packages/WpfDataGrid.Enhancements)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![TFM](https://img.shields.io/badge/TFM-net8.0--windows%20%7C%20net462-purple.svg)](#安装)
+
 轻量级 WPF DataGrid 增强库：多列组合过滤、主题切换、数据导出（CSV / xlsx / PDF）与大数据虚拟化。
 开源版 MIT 协议；Pro 版（xlsx / PDF 导出、正则过滤、大数据虚拟化）采用 RSA 签名授权。详见 [docs/README.md](docs/README.md) 与设计文档 `WPF_DataGrid_增强包_设计文档.md`。
 
@@ -37,14 +42,14 @@ Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）
 
 ## 安装
 
-NuGet 包发布后可通过以下命令安装（占位，发布前替换为实际包版本）：
+已发布至 nuget.org，当前稳定版 **1.0.0**：
 
 ```bash
-# 开源版
-dotnet add package WpfDataGrid.Enhancements
+# 开源版（MIT，nuget.org 公开分发）
+dotnet add package WpfDataGrid.Enhancements --version 1.0.0
 
-# Pro 版（需授权文件激活）
-dotnet add package WpfDataGrid.Enhancements.Pro
+# Pro 版（商业授权，不公开分发）：授权后以 nupkg 直发，从本地源安装
+dotnet add package WpfDataGrid.Enhancements.Pro --source .\pro-packages
 ```
 
 > 目标框架：`net8.0-windows` + `net462`（双 TFM）。依赖（MIT 系）：Microsoft.Xaml.Behaviors.Wpf、Sylvan.Data.Excel（xlsx）、PdfSharp（PDF）。集成方式：Behavior 为主 + 附加属性为辅，不推荐子类。
@@ -138,13 +143,23 @@ Pro 版（`WpfDataGrid.Enhancements.Pro`）采用 **RSA-2048 / RSA-SHA256 签名
 | M1 | 脚手架：解决方案结构、双 TFM（net8.0-windows;net462）、开源/Pro/Demo/Tests 四项目 | ✅ 已完成 |
 | M2 | 核心功能：多列过滤、CSV 导出、主题切换、大数据虚拟化、Pro 导出（xlsx / PDF） | ✅ 已完成 |
 | M3 | 授权体系：RSA-2048 签名授权、LicenseTool 签发工具、试用模式 | ✅ 已完成 |
-| M4 | 导出美化与文档体系：xlsx 表头样式 / 自动列宽 / 对齐 / 冻结表头、完整中文文档 | 🔄 进行中 |
+| M4 | 导出美化与文档体系：xlsx 表头样式 / 自动列宽 / 对齐 / 冻结表头、完整中文文档 | ✅ 已完成（1.0.0） |
+
+## 获取 Pro 版（xlsx / PDF 导出、正则过滤、大数据虚拟化）
+
+Pro 版为商业授权，按授权类型（Personal / Team / Enterprise）与项目数量计费，**报价与授权文件签发通过 Issue 协商**：
+
+1. 在 [Issues](https://github.com/z861123823/WpfDataGrid.Enhancements/issues/new?labels=licensing) 提交一条标题以 `[授权咨询]` 开头的 Issue，写明应用场景、开发者人数、发行产品数量；
+2. 沟通确认授权类型后获取报价，付款后签发 `wpfdatagrid.enhancements.license` 授权文件；
+3. 将授权文件放到应用输出目录，调用 `LicenseManager.ValidateLicense()` 生效，无需联网。
+
+未激活时 Pro 版自动进入试用模式（30 天 / 5000 行），可先评估功能再决定是否购买。
 
 ## 参与贡献 / 反馈
 
-- 欢迎提交 Issue 报告缺陷或建议新功能（占位，发布前替换为仓库地址）。
+- 缺陷与新功能建议：[提交 Issue](https://github.com/z861123823/WpfDataGrid.Enhancements/issues/new)。
 - 本仓库暂不接受未经讨论的外部 Pull Request，重大改动请先开 Issue 说明方案。
-- 商业授权 / Pro 版咨询：见 [docs/licensing/README.md](docs/licensing/README.md)。
+- 商业授权 / Pro 版询价：见上方「获取 Pro 版」，或查阅 [docs/licensing/README.md](docs/licensing/README.md)。
 
 ## 构建
 
