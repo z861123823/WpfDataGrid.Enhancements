@@ -3,7 +3,7 @@
 [![NuGet](https://img.shields.io/nuget/v/WpfDataGrid.Enhancements.svg?label=NuGet)](https://www.nuget.org/packages/WpfDataGrid.Enhancements)
 [![Downloads](https://img.shields.io/nuget/dt/WpfDataGrid.Enhancements.svg?label=downloads)](https://www.nuget.org/packages/WpfDataGrid.Enhancements)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![TFM](https://img.shields.io/badge/TFM-net8.0--windows%20%7C%20net462-purple.svg)](#安装)
+[![TFM](https://img.shields.io/badge/TFM-net462%20%7C%20net8.0--windows%20%7C%20net10.0--windows-purple.svg)](#安装)
 
 轻量级 WPF DataGrid 增强库：多列组合过滤、主题切换、数据导出（CSV / xlsx / PDF）与大数据虚拟化。
 开源版 MIT 协议；Pro 版（xlsx / PDF 导出、正则过滤、大数据虚拟化）采用 RSA 签名授权。详见 [docs/README.md](docs/README.md) 与设计文档 `WPF_DataGrid_增强包_设计文档.md`。
@@ -32,6 +32,34 @@
 
 ![开源版 vs Pro 版功能对比](https://raw.githubusercontent.com/z861123823/WpfDataGrid.Enhancements/main/assets/compare-open-vs-pro.png)
 
+## 与同类库对比
+
+WPF 原生 `DataGrid` 不具备过滤、导出与虚拟化增强，生态中已有若干增强库。下表对比四个主要选择（数据取自 nuget.org 上各自最新稳定版的包元数据，核对时间 2026-11）：
+
+| 对比项 | 本包 `WpfDataGrid.Enhancements` | `DataGridExtensions` | `Actipro...DataGrid.Contrib` | `WpfExtendedDataGrid` |
+|--------|:---:|:---:|:---:|:---:|
+| 最新版本 | 1.0.1 | 2.9.1 | 26.1.1 | 4.8.4 |
+| 协议 | MIT | MIT | 开源（见包页） | 未声明 |
+| 目标框架 | net462 / net8.0-windows / net10.0-windows | net462 / net8.0-windows / net10.0-windows | net462 / net8.0-windows / net10.0-windows | 仅 net48 |
+| 列过滤面板（文本 / 数值 / 日期 / 枚举） | ✅ | ✅ | 见官方文档 | — |
+| 跨列组合过滤（And / Or） | ✅ | — | — | — |
+| 正则过滤 | ✅（Pro） | — | — | — |
+| CSV 导出 | ✅ | — | — | — |
+| xlsx 导出（表头样式 / 自动列宽 / 冻结表头） | ✅（Pro） | — | — | — |
+| PDF 导出（分页 / 横向） | ✅（Pro） | — | — | — |
+| 数据虚拟化（`AsyncVirtualizingCollection<T>` 按页异步加载） | ✅（Pro） | — | — | — |
+| Light / Dark 主题 | ✅ | — | ✅ | — |
+| 授权与商业支持 | Pro 商业授权（RSA 签名 + 30 天试用） | 社区维护 | 商业公司支持 | 无 |
+| nuget 累计下载（2026-11） | — | 约 48.3 万 | 约 42.9 万 | 约 750 |
+| 项目主页 | ✅ | ✅ | ✅ | —（无） |
+
+要点说明：
+
+- **`DataGridExtensions`**：成熟稳定、下载量最大的同类库，官方声明能力为「为 DataGrid 添加过滤 + 正确应用初始排序」，定位是单列过滤，不含导出、虚拟化与主题能力。
+- **`Actipro...DataGrid.Contrib`**：Actipro 官方开源的原生 `DataGrid` 扩展包，侧重 behaviors 与主题资源，具体功能项以 [Actipro 官方文档](https://www.actiprosoftware.com/docs/controls/wpf/index) 为准。
+- **`WpfExtendedDataGrid`**：仅提供 `net48` 目标、未声明开源协议、包内无项目主页与有效描述，不建议作为新项目依赖——这也是本库坚持多 TFM + 明确协议 + 完整文档的原因。
+- **选型建议**：只需要列过滤，选 `DataGridExtensions` 足够；需要**跨列组合过滤、CSV/xlsx/PDF 一键导出、十万级数据虚拟化**中任一项，本包是当前四者中唯一覆盖的选项（导出与虚拟化在 Pro 版）。
+
 ## 界面预览
 
 Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）：
@@ -44,17 +72,17 @@ Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）
 
 ## 安装
 
-已发布至 nuget.org，当前稳定版 **1.0.0**：
+已发布至 nuget.org，当前稳定版 **1.0.2**：
 
 ```bash
 # 开源版（MIT，nuget.org 公开分发）
-dotnet add package WpfDataGrid.Enhancements --version 1.0.0
+dotnet add package WpfDataGrid.Enhancements --version 1.0.2
 
 # Pro 版（商业授权，不公开分发）：授权后以 nupkg 直发，从本地源安装
 dotnet add package WpfDataGrid.Enhancements.Pro --source .\pro-packages
 ```
 
-> 目标框架：`net8.0-windows` + `net462`（双 TFM）。依赖（MIT 系）：Microsoft.Xaml.Behaviors.Wpf、Sylvan.Data.Excel（xlsx）、PdfSharp（PDF）。集成方式：Behavior 为主 + 附加属性为辅，不推荐子类。
+> 目标框架：`net462` + `net8.0-windows` + `net10.0-windows`（三 TFM，覆盖 .NET Framework 4.6.2 至 .NET 10）。依赖（MIT 系）：Microsoft.Xaml.Behaviors.Wpf、Sylvan.Data.Excel（xlsx）、PdfSharp（PDF）。集成方式：Behavior 为主 + 附加属性为辅，不推荐子类。
 
 ## 快速开始
 
@@ -142,10 +170,11 @@ Pro 版（`WpfDataGrid.Enhancements.Pro`）采用 **RSA-2048 / RSA-SHA256 签名
 
 | 里程碑 | 内容 | 状态 |
 |--------|------|:---:|
-| M1 | 脚手架：解决方案结构、双 TFM（net8.0-windows;net462）、开源/Pro/Demo/Tests 四项目 | ✅ 已完成 |
+| M1 | 脚手架：解决方案结构、多 TFM（net8.0-windows;net462）、开源/Pro/Demo/Tests 四项目 | ✅ 已完成 |
 | M2 | 核心功能：多列过滤、CSV 导出、主题切换、大数据虚拟化、Pro 导出（xlsx / PDF） | ✅ 已完成 |
 | M3 | 授权体系：RSA-2048 签名授权、LicenseTool 签发工具、试用模式 | ✅ 已完成 |
 | M4 | 导出美化与文档体系：xlsx 表头样式 / 自动列宽 / 对齐 / 冻结表头、完整中文文档 | ✅ 已完成（1.0.0） |
+| M5 | 框架覆盖与选型文档：新增 `net10.0-windows` 目标框架（三 TFM）、README 同类库横向对比 | ✅ 已完成（1.0.2） |
 
 ## 获取 Pro 版（xlsx / PDF 导出、正则过滤、大数据虚拟化）
 
@@ -167,6 +196,6 @@ Pro 版为商业授权，按授权类型（Personal / Team / Enterprise）与项
 
 ```bash
 dotnet restore
-dotnet build WpfDataGrid.Enhancements.sln   # 双 TFM 0 警告 0 错误
+dotnet build WpfDataGrid.Enhancements.sln   # 三 TFM 0 警告 0 错误
 dotnet test tests/WpfDataGrid.Enhancements.Tests   # 全部测试通过
 ```

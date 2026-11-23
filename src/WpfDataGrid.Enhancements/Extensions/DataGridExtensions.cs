@@ -2,6 +2,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WpfDataGrid.Enhancements.Theming;
+// .NET 10 起 System.Windows 新增了同名 ThemeMode 枚举，此处用别名固定指向本库的 ThemeMode，
+// 避免 net10.0-windows 下出现 CS0104 类型歧义（net8 / net462 下行为不变）。
+using ThemeMode = WpfDataGrid.Enhancements.Theming.ThemeMode;
 
 namespace WpfDataGrid.Enhancements;
 

@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows;net462</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net10.0-windows;net462</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <RootNamespace>WpfDataGrid.Enhancements</RootNamespace>
     <AssemblyName>WpfDataGrid.Enhancements</AssemblyName>
     <PackageId>WpfDataGrid.Enhancements</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>WpfDataGrid.Enhancements Team</Authors>
     <Description>Lightweight DataGrid enhancement library for WPF: multi-column filtering, theming, CSV export and integration foundations (Open Source Edition, MIT).</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>wpf;datagrid;filtering;export;excel;xlsx;csv;pdf;virtualization;theme;behavior;mvvm;net8;filter;enhancements</PackageTags>
+    <PackageTags>wpf;datagrid;filtering;export;excel;xlsx;csv;pdf;virtualization;theme;behavior;mvvm;net8;net10;filter;enhancements</PackageTags>
     <RepositoryUrl>https://github.com/z861123823/WpfDataGrid.Enhancements</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/z861123823/WpfDataGrid.Enhancements</PackageProjectUrl>
