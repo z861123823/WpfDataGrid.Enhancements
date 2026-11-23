@@ -30,6 +30,8 @@
 | 授权体系（RSA-2048 签名授权，试用模式） | — | ✅ |
 | 协议 | MIT | 商业授权（内置 30 天试用） |
 
+![开源版 vs Pro 版功能对比](https://raw.githubusercontent.com/z861123823/WpfDataGrid.Enhancements/main/assets/compare-open-vs-pro.png)
+
 ## 界面预览
 
 Demo 实测截图（浅色 / 深色，均来自真实渲染的 Demo 主窗口）：
