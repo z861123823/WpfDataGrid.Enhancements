@@ -13,7 +13,11 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          # 需同时具备 .NET 8 与 .NET 10 SDK：库的三 TFM 含 net10.0-windows，
+          # 仅装 8.0.x 会出现 NETSDK1045（当前 SDK 不支持面向 net10.0）。
+          dotnet-version: |
+            8.0.x
+            10.0.x
 
       # Open-source core library only. Demo/Tests reference the closed-source
       # Pro library and are validated in the local Pro environment.

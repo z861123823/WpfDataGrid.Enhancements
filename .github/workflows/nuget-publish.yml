@@ -18,7 +18,10 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          # 打包需覆盖 net462 / net8.0-windows / net10.0-windows，缺 .NET 10 SDK 会 NETSDK1045。
+          dotnet-version: |
+            8.0.x
+            10.0.x
 
       - name: Set version from tag
         shell: pwsh
